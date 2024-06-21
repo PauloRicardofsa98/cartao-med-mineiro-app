@@ -4,7 +4,6 @@ import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import "react-native-reanimated";
 import Auth from "./(auth)/login";
-import { SafeAreaProvider } from "react-native-safe-area-context";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -35,9 +34,5 @@ export default function RootLayout() {
     return null;
   }
 
-  return (
-    <SafeAreaProvider>
-      <Auth />
-    </SafeAreaProvider>
-  );
+  return <Auth />;
 }
