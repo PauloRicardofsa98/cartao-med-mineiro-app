@@ -3,7 +3,7 @@ import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import "react-native-reanimated";
-import Auth from "./(auth)/login";
+import { InitialPage } from "./(auth)/initial";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -34,5 +34,5 @@ export default function RootLayout() {
     return null;
   }
 
-  return <Auth />;
+  return <InitialPage />;
 }
