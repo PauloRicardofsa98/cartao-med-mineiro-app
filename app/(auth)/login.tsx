@@ -1,9 +1,9 @@
+import * as Animatable from "react-native-animatable";
 import { Button } from "@/components/ui/button";
 import { InputIcon } from "@/components/ui/input-icon";
 import { useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import {
-  Image,
   ImageBackground,
   KeyboardAvoidingView,
   View,
@@ -29,6 +29,9 @@ export const Login = () => {
     register("cpf");
     register("password");
   }, [register]);
+  useEffect(() => {
+    console.log(errors.cpf);
+  }, [errors]);
 
   const onSubmit: SubmitHandler<LoginProps> = (data) => console.log(data);
 
@@ -44,7 +47,8 @@ export const Login = () => {
         behavior={Platform.OS === "ios" ? "padding" : "height"}
       >
         <View className="flex flex-col items-center justify-center">
-          <Image
+          <Animatable.Image
+            animation={"zoomIn"}
             source={require("../../assets/images/logo.png")}
             className="h-52 w-80"
           />
@@ -52,15 +56,16 @@ export const Login = () => {
           <InputIcon
             placeholder="CPF"
             onChangeText={(text) => setValue("cpf", text)}
+            {...register("cpf", { required: true })}
+            error={errors.cpf}
           />
-          {errors.cpf && <span>Digite o cpf</span>}
 
           <InputIcon
             placeholder="Senha"
             onChangeText={(text) => setValue("password", text)}
             secureTextEntry
+            error={errors.password}
           />
-          {errors.password && <span>Digite sua senha</span>}
 
           <Button className="mt-4 px-12" onPress={handleSubmit(onSubmit)}>
             Acessar
