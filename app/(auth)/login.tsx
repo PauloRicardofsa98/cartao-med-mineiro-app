@@ -10,6 +10,7 @@ import {
   Text,
   Platform,
 } from "react-native";
+import { Lock, User2 } from "lucide-react-native";
 
 type LoginProps = {
   cpf: string;
@@ -20,7 +21,6 @@ export const Login = () => {
   const {
     register,
     handleSubmit,
-    watch,
     setValue,
     formState: { errors },
   } = useForm<LoginProps>();
@@ -29,13 +29,8 @@ export const Login = () => {
     register("cpf");
     register("password");
   }, [register]);
-  useEffect(() => {
-    console.log(errors.cpf);
-  }, [errors]);
 
   const onSubmit: SubmitHandler<LoginProps> = (data) => console.log(data);
-
-  console.log(watch("cpf"));
 
   return (
     <ImageBackground
@@ -54,17 +49,20 @@ export const Login = () => {
           />
 
           <InputIcon
+            Icon={User2}
             placeholder="CPF"
             onChangeText={(text) => setValue("cpf", text)}
             {...register("cpf", { required: true })}
-            error={errors.cpf}
+            error={!!errors.cpf}
           />
 
           <InputIcon
+            Icon={Lock}
             placeholder="Senha"
             onChangeText={(text) => setValue("password", text)}
             secureTextEntry
-            error={errors.password}
+            {...register("password", { required: true })}
+            error={!!errors.password}
           />
 
           <Button className="mt-4 px-12" onPress={handleSubmit(onSubmit)}>
