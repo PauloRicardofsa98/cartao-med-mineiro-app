@@ -1,5 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { InputIcon } from "@/components/ui/input-icon";
+import { useEffect } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
 import {
   Image,
   ImageBackground,
@@ -9,7 +11,29 @@ import {
   Platform,
 } from "react-native";
 
+type LoginProps = {
+  cpf: string;
+  password: string;
+};
+
 export const Login = () => {
+  const {
+    register,
+    handleSubmit,
+    watch,
+    setValue,
+    formState: { errors },
+  } = useForm<LoginProps>();
+
+  useEffect(() => {
+    register("cpf");
+    register("password");
+  }, [register]);
+
+  const onSubmit: SubmitHandler<LoginProps> = (data) => console.log(data);
+
+  console.log(watch("cpf"));
+
   return (
     <ImageBackground
       source={require("../../assets/images/login/background.png")}
@@ -25,11 +49,22 @@ export const Login = () => {
             className="h-52 w-80"
           />
 
-          <InputIcon placeholder="CPF" />
+          <InputIcon
+            placeholder="CPF"
+            onChangeText={(text) => setValue("cpf", text)}
+          />
+          {errors.cpf && <span>Digite o cpf</span>}
 
-          <InputIcon placeholder="Senha" secureTextEntry />
+          <InputIcon
+            placeholder="Senha"
+            onChangeText={(text) => setValue("password", text)}
+            secureTextEntry
+          />
+          {errors.password && <span>Digite sua senha</span>}
 
-          <Button className="mt-4 px-12">Acessar</Button>
+          <Button className="mt-4 px-12" onPress={handleSubmit(onSubmit)}>
+            Acessar
+          </Button>
         </View>
       </KeyboardAvoidingView>
       <Text className="absolute bottom-4 text-center text-lg font-semibold text-primary">
