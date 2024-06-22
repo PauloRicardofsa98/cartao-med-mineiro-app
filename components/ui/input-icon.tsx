@@ -10,7 +10,7 @@ const InputStyled = ({ ...rest }: TextInputProps) => {
       </View>
 
       <TextInput
-        className="mb-2 h-16 w-80 rounded-xl border-[1px] border-primary py-0 pl-12 text-lg text-primary placeholder-opacity-50 outline-none transition-all"
+        className="mb-2 h-16 w-80 rounded-xl border-[1px] border-primary py-0 pl-12 text-2xl text-primary placeholder-opacity-50 outline-none transition-all"
         placeholderTextColor={"#012d4887"}
         {...rest}
       />
