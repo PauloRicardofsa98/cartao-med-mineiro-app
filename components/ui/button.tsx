@@ -1,17 +1,13 @@
 import { styled } from "nativewind";
 import { TouchableOpacity, Text, TouchableOpacityProps } from "react-native";
 
-interface ButtonProps extends TouchableOpacityProps {
-  children: React.ReactNode;
-}
-
-const ButtonStyled = ({ children, ...rest }: ButtonProps) => {
+const ButtonStyled = ({ children, ...rest }: TouchableOpacityProps) => {
   return (
     <TouchableOpacity
-      className="bg-primary h-14 rounded-xl items-center justify-center flex"
+      className="flex h-14 items-center justify-center rounded-xl bg-primary"
       {...rest}
     >
-      <Text className="text-white font-semibold text-xl"> {children}</Text>
+      <Text className="text-xl font-semibold text-white"> {children}</Text>
     </TouchableOpacity>
   );
 };
