@@ -1,6 +1,5 @@
+import { useState } from "react";
 import * as Animatable from "react-native-animatable";
-import { Button } from "@/components/ui/button";
-import { InputIcon } from "@/components/ui/input-icon";
 import { useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import {
@@ -9,15 +8,20 @@ import {
   View,
   Text,
   Platform,
+  Image,
 } from "react-native";
 import { Lock, User2 } from "lucide-react-native";
+import { Button } from "@/components/ui/button";
+import { InputIcon } from "@/components/ui/input-icon";
 
 type LoginProps = {
   cpf: string;
   password: string;
 };
 
-export const Login = () => {
+export default function LoginScre() {
+  const [prologo, setPrologo] = useState(true);
+
   const {
     register,
     handleSubmit,
@@ -32,9 +36,26 @@ export const Login = () => {
 
   const onSubmit: SubmitHandler<LoginProps> = (data) => console.log(data);
 
-  return (
+  return prologo ? (
+    <View className="flex-1">
+      <ImageBackground
+        source={require("../../assets/images/background/background_initial.png")}
+        className="flex h-full w-full items-center justify-end"
+      >
+        <Image source={require("../../assets/images/medic.png")} />
+        <View className="flex h-72 w-[430px] items-center justify-center gap-4 rounded-t-[50px] bg-white p-5">
+          <Text className="text-center text-3xl font-bold text-primary">
+            Seja bem-vindo(a) ao futuro da saúde!
+          </Text>
+          <Button className="w-80" onPress={() => setPrologo(false)}>
+            <Text className="text-xl font-semibold text-white">Entrar</Text>
+          </Button>
+        </View>
+      </ImageBackground>
+    </View>
+  ) : (
     <ImageBackground
-      source={require("../../assets/images/login/background.png")}
+      source={require("../../assets/images/background/background_login.png")}
       className="flex h-full w-full flex-1 items-center justify-center bg-cover bg-center"
     >
       <KeyboardAvoidingView
@@ -75,4 +96,4 @@ export const Login = () => {
       </Text>
     </ImageBackground>
   );
-};
+}
