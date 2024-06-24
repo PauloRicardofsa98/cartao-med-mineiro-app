@@ -1,4 +1,4 @@
-import { DrawerContent } from "@/components/drawer-content";
+import { DrawerContent } from "@/components/drawer/drawer-content";
 import { useSession } from "@/contexts/auth";
 import { LinearGradient } from "expo-linear-gradient";
 import { Redirect } from "expo-router";
