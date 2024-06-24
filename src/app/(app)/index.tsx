@@ -1,5 +1,6 @@
 import { HomeButton } from "@/components/ui/home-button";
 import { LinearGradient } from "expo-linear-gradient";
+import { router } from "expo-router";
 import { HeartPulse, MessageCircleMore, ScanFace } from "lucide-react-native";
 import { Image, SafeAreaView, Text, View } from "react-native";
 
@@ -46,7 +47,11 @@ export default function HomeScreen() {
             <HomeButton Icon={ScanFace} text="Carteirinha" />
             <HomeButton Icon={MessageCircleMore} text="Suporte" />
             <HomeButton Icon={HeartPulse} text="2º via de boleto" />
-            <HomeButton Icon={HeartPulse} text="Parceiros" />
+            <HomeButton
+              Icon={HeartPulse}
+              text="Parceiros"
+              onPress={() => router.push("/partner")}
+            />
             <HomeButton Icon={HeartPulse} text="Clube de Benefícios" />
             <HomeButton Icon={HeartPulse} text="Fornecedor de gás" />
             <HomeButton Icon={HeartPulse} text="Guia de Gás" />
