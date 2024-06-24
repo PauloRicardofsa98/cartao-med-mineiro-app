@@ -39,10 +39,10 @@ export default function LoginScre() {
   return prologo ? (
     <View className="flex-1">
       <ImageBackground
-        source={require("../../assets/images/background/background_initial.png")}
+        source={require("../assets/images/background/background_initial.png")}
         className="flex h-full w-full items-center justify-end"
       >
-        <Image source={require("../../assets/images/medic.png")} />
+        <Image source={require("../assets/images/medic.png")} />
         <View className="flex h-72 w-[430px] items-center justify-center gap-4 rounded-t-[50px] bg-white p-5">
           <Text className="text-center text-3xl font-bold text-primary">
             Seja bem-vindo(a) ao futuro da saúde!
@@ -55,7 +55,7 @@ export default function LoginScre() {
     </View>
   ) : (
     <ImageBackground
-      source={require("../../assets/images/background/background_login.png")}
+      source={require("../assets/images/background/background_login.png")}
       className="flex h-full w-full flex-1 items-center justify-center bg-cover bg-center"
     >
       <KeyboardAvoidingView
@@ -65,7 +65,7 @@ export default function LoginScre() {
         <View className="flex flex-col items-center justify-center">
           <Animatable.Image
             animation={"zoomIn"}
-            source={require("../../assets/images/logo.png")}
+            source={require("../assets/images/logo.png")}
             className="h-52 w-80"
           />
 

@@ -20,7 +20,8 @@ export default function HomeScreen() {
           </View>
           <View className="flex h-52 w-80 items-center justify-center rounded-xl bg-red-300">
             <Image
-              source={require("../../../assets/images/card.png")}
+              // source={require("../../../assets/images/card.png")}
+              source={require("../../assets/images/card.png")}
               className="h-52 w-96 rounded-xl"
             />
             <View className="absolute left-0 top-1">
