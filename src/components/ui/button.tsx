@@ -4,7 +4,6 @@ import { Text, TouchableOpacityProps, Pressable } from "react-native";
 
 interface ButtonProps extends TouchableOpacityProps {
   variant?: "primary" | "secondary" | "danger" | "outline";
-  shadow?: boolean;
 }
 
 const variants: { [key: string]: { view: string; text: string } } = {
@@ -28,11 +27,9 @@ const variants: { [key: string]: { view: string; text: string } } = {
 
 const ButtonStyled = ({
   children,
-  shadow,
   variant = "primary",
   ...rest
 }: ButtonProps) => {
-  console.log(shadow ? "true" : "false");
   return (
     <Pressable
       className={`flex h-14 items-center justify-center rounded-xl ${variants[variant].view}`}
