@@ -62,6 +62,12 @@ export default function AppLayout() {
           title: "Clube de benefícios",
         }}
       />
+      <Drawer.Screen
+        name="supplier-gas"
+        options={{
+          title: "Fornecedores de gás",
+        }}
+      />
     </Drawer>
   );
 }
