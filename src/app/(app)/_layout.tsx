@@ -53,7 +53,13 @@ export default function AppLayout() {
       <Drawer.Screen
         name="partner"
         options={{
-          title: "parceiros",
+          title: "Parceiros",
+        }}
+      />
+      <Drawer.Screen
+        name="club"
+        options={{
+          title: "Clube de benefícios",
         }}
       />
     </Drawer>
