@@ -3,6 +3,7 @@ import { useSession } from "@/contexts/auth";
 import { LinearGradient } from "expo-linear-gradient";
 import { Redirect } from "expo-router";
 import { Drawer } from "expo-router/drawer";
+import { AlignJustify } from "lucide-react-native";
 import { StyleSheet } from "react-native";
 
 export default function AppLayout() {
@@ -14,12 +15,20 @@ export default function AppLayout() {
 
   return (
     <Drawer
-      screenOptions={{
+      screenOptions={({ navigation }) => ({
         headerShown: true,
         headerStyle: {
           backgroundColor: "#042A43",
         },
-      }}
+        headerTintColor: "#fff",
+        headerLeft: () => (
+          <AlignJustify
+            size={30}
+            className="ml-4 text-white"
+            onPress={navigation.toggleDrawer}
+          />
+        ),
+      })}
       drawerContent={(props) => <DrawerContent {...props} />}
     >
       <Drawer.Screen
@@ -41,7 +50,12 @@ export default function AppLayout() {
           },
         }}
       />
-      <Drawer.Screen name="partner" options={{ title: "parceiros" }} />
+      <Drawer.Screen
+        name="partner"
+        options={{
+          title: "parceiros",
+        }}
+      />
     </Drawer>
   );
 }
