@@ -53,7 +53,11 @@ export default function HomeScreen() {
               onPress={() => router.push("/partner")}
             />
             <HomeButton Icon={HeartPulse} text="Clube de Benefícios" />
-            <HomeButton Icon={HeartPulse} text="Fornecedor de gás" />
+            <HomeButton
+              Icon={HeartPulse}
+              text="Fornecedor de gás"
+              available={false}
+            />
             <HomeButton Icon={HeartPulse} text="Guia de Gás" />
             <HomeButton Icon={HeartPulse} text="Fazer pedido" />
           </View>
