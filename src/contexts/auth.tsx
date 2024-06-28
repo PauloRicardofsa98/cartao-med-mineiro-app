@@ -1,8 +1,9 @@
 import { api } from "@/services/api";
 import { Customer, Dependent, User } from "@/types/user";
-import React, { PropsWithChildren, useState } from "react";
+import React, { PropsWithChildren, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { AxiosError } from "axios";
+import { router } from "expo-router";
 
 type ResponseLogin = {
   customer: Customer;
@@ -37,6 +38,27 @@ export function SessionProvider(props: PropsWithChildren) {
   const [user, setUser] = useState<User | undefined>();
   const isAuth = !!user;
 
+  useEffect(() => {
+    async function getUser() {
+      const userInfo = await AsyncStorage.getItem("@cmm");
+      console.log("userInfo: ", userInfo);
+      const hasUser = JSON.parse(userInfo || "{}") as {
+        user: User;
+        token: string;
+      };
+
+      if (hasUser.token) {
+        api.defaults.headers.common["Authorization"] =
+          `Bearer ${hasUser.token}`;
+
+        setUser(hasUser.user);
+        router.replace("/");
+      }
+    }
+
+    getUser();
+  }, []);
+
   async function signIn({ cpf, birthday }: { cpf: string; birthday: string }) {
     try {
       console.log("cpf: ", cpf, "birthday: ", birthday);
@@ -46,8 +68,9 @@ export function SessionProvider(props: PropsWithChildren) {
       });
 
       const { token, customer, dependent } = response.data.data;
+      let user: User;
       if (dependent) {
-        const user: User = {
+        user = {
           uuid: dependent.uuid,
           name: dependent.name,
           cpfOrCnpj: dependent.cpfOrCnpj,
@@ -56,7 +79,7 @@ export function SessionProvider(props: PropsWithChildren) {
         };
         setUser(user);
       } else {
-        const user: User = {
+        user = {
           uuid: customer.uuid,
           name: customer.name,
           cpfOrCnpj: customer.cpfOrCnpj,
@@ -66,10 +89,7 @@ export function SessionProvider(props: PropsWithChildren) {
         setUser(user);
       }
 
-      await AsyncStorage.setItem(
-        "@cmm",
-        JSON.stringify({ customer, dependent, token }),
-      );
+      await AsyncStorage.setItem("@cmm", JSON.stringify({ user, token }));
 
       api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
