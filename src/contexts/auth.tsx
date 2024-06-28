@@ -1,14 +1,29 @@
-import React from "react";
+import { api } from "@/services/api";
+import { Customer, Dependent, User } from "@/types/user";
+import React, { PropsWithChildren, useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { AxiosError } from "axios";
+
+type ResponseLogin = {
+  customer: Customer;
+  dependent: Dependent | undefined;
+};
 
 type AuthContextData = {
   isAuth: boolean;
+  user: User | undefined;
+
+  signIn: (data: {
+    cpf: string;
+    birthday: string;
+  }) => Promise<ResponseLogin | string>;
 };
 
 const AuthContext = React.createContext({} as AuthContextData);
 
-// This hook can be used to access the user info.
 export function useSession() {
   const value = React.useContext(AuthContext);
+
   if (process.env.NODE_ENV !== "production") {
     if (!value) {
       throw new Error("useSession must be wrapped in a <SessionProvider />");
@@ -18,12 +33,63 @@ export function useSession() {
   return value;
 }
 
-export function SessionProvider(props: React.PropsWithChildren) {
-  const isAuth = true;
+export function SessionProvider(props: PropsWithChildren) {
+  const [user, setUser] = useState<User | undefined>();
+  const isAuth = !!user;
+
+  async function signIn({ cpf, birthday }: { cpf: string; birthday: string }) {
+    try {
+      console.log("cpf: ", cpf, "birthday: ", birthday);
+      const response = await api.post("/auth/customer", {
+        cpfOrCnpj: cpf,
+        password: birthday,
+      });
+
+      const { token, customer, dependent } = response.data.data;
+      if (dependent) {
+        const user: User = {
+          uuid: dependent.uuid,
+          name: dependent.name,
+          cpfOrCnpj: dependent.cpfOrCnpj,
+          holder: customer.name,
+          plan: customer.planName,
+        };
+        setUser(user);
+      } else {
+        const user: User = {
+          uuid: customer.uuid,
+          name: customer.name,
+          cpfOrCnpj: customer.cpfOrCnpj,
+          holder: customer.uuid,
+          plan: customer.planName,
+        };
+        setUser(user);
+      }
+
+      await AsyncStorage.setItem(
+        "@cmm",
+        JSON.stringify({ customer, dependent, token }),
+      );
+
+      api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+
+      return { customer, dependent };
+    } catch (error) {
+      console.log("erro ao acessar: ", JSON.stringify(error));
+      if (error instanceof AxiosError) {
+        console.log(error.response?.data.message);
+        return error.response?.data.message;
+      }
+      return "Opss, algo deu errado! Tente novamente!";
+    }
+  }
+
   return (
     <AuthContext.Provider
       value={{
         isAuth,
+        user,
+        signIn,
       }}
     >
       {props.children}

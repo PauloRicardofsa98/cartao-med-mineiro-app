@@ -9,7 +9,6 @@ import { StyleSheet } from "react-native";
 export default function AppLayout() {
   const { isAuth } = useSession();
   if (!isAuth) {
-    console.log("Não Logado");
     return <Redirect href="/login" />;
   }
 

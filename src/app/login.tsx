@@ -9,18 +9,24 @@ import {
   Text,
   Platform,
   Image,
+  ActivityIndicator,
 } from "react-native";
 import { Lock, User2 } from "lucide-react-native";
 import { Button } from "@/components/ui/button";
 import { InputIcon } from "@/components/ui/input-icon";
+import { useSession } from "@/contexts/auth";
+import Toast from "react-native-toast-message";
+import { router } from "expo-router";
 
 type LoginProps = {
   cpf: string;
   password: string;
 };
 
-export default function LoginScre() {
-  const [prologo, setPrologo] = useState(true);
+export default function LoginScreen() {
+  const { signIn } = useSession();
+  const [prologo, setPrologo] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const {
     register,
@@ -34,7 +40,33 @@ export default function LoginScre() {
     register("password");
   }, [register]);
 
-  const onSubmit: SubmitHandler<LoginProps> = (data) => console.log(data);
+  const onSubmit: SubmitHandler<LoginProps> = async (data) => {
+    setLoading(true);
+    const login = await signIn({ cpf: data.cpf, birthday: data.password });
+    if (typeof login === "string") {
+      Toast.show({
+        type: "error",
+        position: "bottom",
+        text1: login,
+        visibilityTime: 3000,
+      });
+      setLoading(false);
+      return;
+    }
+    console.log(login);
+
+    const { customer, dependent } = login;
+    const user = customer || dependent;
+
+    Toast.show({
+      type: "success",
+      position: "bottom",
+      text1: `Bem vindo ${user.name}!`,
+      visibilityTime: 3000,
+    });
+    router.replace("/");
+    setLoading(false);
+  };
 
   return prologo ? (
     <View className="flex-1">
@@ -72,6 +104,7 @@ export default function LoginScre() {
           <InputIcon
             Icon={User2}
             placeholder="CPF"
+            keyboardType="numeric"
             onChangeText={(text) => setValue("cpf", text)}
             {...register("cpf", { required: true })}
             error={!!errors.cpf}
@@ -82,12 +115,17 @@ export default function LoginScre() {
             placeholder="Senha"
             onChangeText={(text) => setValue("password", text)}
             secureTextEntry
+            keyboardType="numeric"
             {...register("password", { required: true })}
             error={!!errors.password}
           />
 
-          <Button className="mt-4 px-12" onPress={handleSubmit(onSubmit)}>
-            Acessar
+          <Button className="mt-4 w-36" onPress={handleSubmit(onSubmit)}>
+            {loading ? (
+              <ActivityIndicator size={40} color={"#fff"} />
+            ) : (
+              <Text className="text-xl font-semibold text-white">Entrar</Text>
+            )}
           </Button>
         </View>
       </KeyboardAvoidingView>
