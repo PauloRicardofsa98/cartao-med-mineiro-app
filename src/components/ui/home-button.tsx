@@ -1,43 +1,53 @@
 import { LucideIcon } from "lucide-react-native";
-import { StyleSheet, Text, View } from "react-native";
+import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
 import { Pressable, PressableProps } from "react-native";
 import { Badge } from "./badge";
+import * as Animatable from "react-native-animatable";
 
 interface HomeButtonProps extends PressableProps {
   Icon: LucideIcon;
   text: string;
   available?: boolean;
+  loading?: boolean;
 }
 
 export const HomeButton = ({
   Icon,
   text,
   available = true,
+  loading = false,
   ...rest
 }: HomeButtonProps) => {
   return (
-    <View
+    <Animatable.View
       className="m-1 flex h-28 w-28 items-center justify-center rounded-xl bg-white"
       style={styles.shadow}
+      animation={"zoomIn"}
     >
-      <Pressable
-        className="flex h-full w-full items-center justify-center"
-        {...rest}
-      >
-        <View className="flex h-1/2 items-center justify-end">
-          <View className="flex h-10 w-10 items-center justify-center rounded-full bg-secondary">
-            <Icon size={25} className="text-white" />
+      {loading ? (
+        <View>
+          <ActivityIndicator size={"large"} color={"#042A43"} />
+        </View>
+      ) : (
+        <Pressable
+          className="flex h-full w-full items-center justify-center"
+          {...rest}
+        >
+          <View className="flex h-1/2 items-center justify-end">
+            <View className="flex h-10 w-10 items-center justify-center rounded-full bg-secondary">
+              <Icon size={25} className="text-white" />
+            </View>
           </View>
-        </View>
-        <View className="flex h-1/2 items-center justify-center">
-          {available ? (
-            <Text className="text-center text-sm">{text}</Text>
-          ) : (
-            <Badge label="em breve" className="z-50" />
-          )}
-        </View>
-      </Pressable>
-    </View>
+          <View className="flex h-1/2 items-center justify-center">
+            {available ? (
+              <Text className="text-center text-sm">{text}</Text>
+            ) : (
+              <Badge label="em breve" className="z-50" />
+            )}
+          </View>
+        </Pressable>
+      )}
+    </Animatable.View>
   );
 };
 
