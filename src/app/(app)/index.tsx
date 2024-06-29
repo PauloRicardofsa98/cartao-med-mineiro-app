@@ -119,7 +119,7 @@ export default function HomeScreen() {
             <HomeButton
               Icon={HeartPulse}
               text="Fornecedor de gás"
-              available={false}
+              onPress={() => router.push("/supplier-gas")}
             />
             <HomeButton
               Icon={HeartPulse}

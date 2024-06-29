@@ -1,8 +1,37 @@
+import { api } from "@/services/api";
+import { SupplierGas } from "@/types/supplier-gas";
 import { styles } from "@/utils/styles";
-import { Text } from "react-native";
+import { useEffect, useState } from "react";
+import { ActivityIndicator, Text } from "react-native";
 import { ScrollView, View } from "react-native";
 
 export default function ClubScreen() {
+  const [loading, setLoading] = useState(true);
+  const [suppliers, setSuppliers] = useState<SupplierGas[]>([]);
+
+  useEffect(() => {
+    setLoading(true);
+    async function getSuppliers() {
+      try {
+        const response = await api.get("/supplier/gas");
+        const listSupplier = response.data.data;
+        setSuppliers(listSupplier);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    getSuppliers();
+    setLoading(false);
+  }, []);
+
+  if (loading) {
+    return (
+      <View className="flex flex-1 items-center justify-center">
+        <ActivityIndicator size="large" color="#042A43" />
+      </View>
+    );
+  }
+
   return (
     <View className="flex flex-1 items-center justify-center">
       <ScrollView
@@ -14,7 +43,7 @@ export default function ClubScreen() {
           gap: 10,
         }}
       >
-        {Array.from({ length: 10 }).map((_, index) => (
+        {suppliers.map((supplier, index) => (
           <View
             key={index}
             className="h-42 w-[95%] rounded-2xl bg-white p-4"
@@ -22,18 +51,18 @@ export default function ClubScreen() {
           >
             <View>
               <Text className="text-base font-semibold">Nome:</Text>
-              <Text className="text-base">Paulo Ricardo de Souza Santos</Text>
+              <Text className="text-base">{supplier.name}</Text>
             </View>
             <View>
               <Text className="text-base font-semibold">Endereço:</Text>
               <Text className="text-base">
-                Rua das Flores, 123, Bairro Primavera, Cidade Verde, Estado do
-                Sol Nascente, CEP: 12345-678
+                {supplier.address}, {supplier.city}, {supplier.state}, CEP:{" "}
+                {supplier.zipCode}
               </Text>
             </View>
             <View>
               <Text className="text-base font-semibold">Contato:</Text>
-              <Text className="text-base">(61) 99999-9999</Text>
+              <Text className="text-base">{supplier.phone}</Text>
             </View>
           </View>
         ))}
