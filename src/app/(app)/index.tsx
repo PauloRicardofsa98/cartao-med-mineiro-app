@@ -1,13 +1,61 @@
 import { HomeButton } from "@/components/ui/home-button";
 import { useSession } from "@/contexts/auth";
+import { api } from "@/services/api";
 import { maskCpfCnpj } from "@/utils/helper";
 import { LinearGradient } from "expo-linear-gradient";
 import { router } from "expo-router";
 import { HeartPulse, MessageCircleMore, ScanFace } from "lucide-react-native";
-import { Image, SafeAreaView, Text, View } from "react-native";
+import { useState } from "react";
+import { Alert, Image, Linking, SafeAreaView, Text, View } from "react-native";
+import Toast from "react-native-toast-message";
 
 export default function HomeScreen() {
   const { user } = useSession();
+  const [loadingSupport, setLoadingSupport] = useState(false);
+
+  const openSupport = async () => {
+    const supported = await Linking.canOpenURL(
+      "https://api.whatsapp.com/send?phone=5538998760623&text=Ol%C3%A1,%20vim%20pelo%20app.%20Voc%C3%AA%20pode%20me%20ajudar?",
+    );
+
+    if (supported) {
+      await Linking.openURL(
+        "https://api.whatsapp.com/send?phone=5538998760623&text=Ol%C3%A1,%20vim%20pelo%20app.%20Voc%C3%AA%20pode%20me%20ajudar?",
+      );
+    } else {
+      Alert.alert(`Numero do nosso WhatsApp (38) 99876-0623`);
+    }
+  };
+
+  const openService = async () => {
+    try {
+      setLoadingSupport(true);
+      const response = await api.get(`gateway/rapidoc/service/${user?.uuid}`);
+      const supported = await Linking.canOpenURL(response.data.data);
+
+      if (supported) {
+        await Linking.openURL(response.data.data);
+      } else {
+        Toast.show({
+          type: "error",
+          position: "bottom",
+          text1: "Não foi possível abrir o atendimento, contate o suporte!",
+          visibilityTime: 3000,
+        });
+      }
+      setLoadingSupport(false);
+    } catch (error) {
+      Toast.show({
+        type: "error",
+        position: "bottom",
+        text1: "Não foi possível abrir o atendimento!",
+        text2: "Tente novamente ou contate o suporte.",
+        visibilityTime: 3000,
+      });
+      setLoadingSupport(false);
+    }
+  };
+
   return (
     <SafeAreaView className="flex-1">
       <LinearGradient
@@ -45,9 +93,22 @@ export default function HomeScreen() {
           </Text>
 
           <View className="flex h-full w-full flex-row flex-wrap items-center justify-center pt-2">
-            <HomeButton Icon={HeartPulse} text="Solicitar atendimento" />
-            <HomeButton Icon={ScanFace} text="Carteirinha" />
-            <HomeButton Icon={MessageCircleMore} text="Suporte" />
+            <HomeButton
+              Icon={HeartPulse}
+              text="Solicitar atendimento"
+              loading={loadingSupport}
+              onPress={openService}
+            />
+            <HomeButton
+              Icon={ScanFace}
+              text="Carteirinha"
+              onPress={() => router.push("/card-identity")}
+            />
+            <HomeButton
+              Icon={MessageCircleMore}
+              text="Suporte"
+              onPress={openSupport}
+            />
             <HomeButton Icon={HeartPulse} text="2º via de boleto" />
             <HomeButton
               Icon={HeartPulse}
@@ -60,8 +121,16 @@ export default function HomeScreen() {
               text="Fornecedor de gás"
               available={false}
             />
-            <HomeButton Icon={HeartPulse} text="Guia de Gás" />
-            <HomeButton Icon={HeartPulse} text="Fazer pedido" />
+            <HomeButton
+              Icon={HeartPulse}
+              text="Guia de Gás"
+              available={false}
+            />
+            <HomeButton
+              Icon={HeartPulse}
+              text="Fazer pedido"
+              available={false}
+            />
           </View>
         </View>
       </LinearGradient>
