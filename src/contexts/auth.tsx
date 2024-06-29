@@ -61,7 +61,6 @@ export function SessionProvider(props: PropsWithChildren) {
 
   async function signIn({ cpf, birthday }: { cpf: string; birthday: string }) {
     try {
-      console.log("cpf: ", cpf, "birthday: ", birthday);
       const response = await api.post("/auth/customer", {
         cpfOrCnpj: cpf,
         password: birthday,
@@ -76,6 +75,7 @@ export function SessionProvider(props: PropsWithChildren) {
           cpfOrCnpj: dependent.cpfOrCnpj,
           holder: customer.name,
           plan: customer.planName,
+          subscriptionUuid: customer.subscriptionUuid,
         };
         setUser(user);
       } else {
@@ -85,6 +85,7 @@ export function SessionProvider(props: PropsWithChildren) {
           cpfOrCnpj: customer.cpfOrCnpj,
           holder: customer.uuid,
           plan: customer.planName,
+          subscriptionUuid: customer.subscriptionUuid,
         };
         setUser(user);
       }
