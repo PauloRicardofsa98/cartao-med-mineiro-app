@@ -163,7 +163,7 @@ export default function PartnerScreen() {
         )}
         {!open && selectedCity && (
           <ScrollView
-            className="w-ful mt-4 p-4"
+            className="mt-4 w-full p-4"
             contentContainerStyle={{
               display: "flex",
               alignItems: "center",
