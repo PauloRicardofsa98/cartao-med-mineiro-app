@@ -1,4 +1,4 @@
-import { LucideIcon } from "lucide-react-native";
+import { Hourglass, LucideIcon } from "lucide-react-native";
 import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
 import { Pressable, PressableProps } from "react-native";
 import { Badge } from "./badge";
@@ -35,7 +35,11 @@ export const HomeButton = ({
         >
           <View className="flex h-1/2 items-center justify-end">
             <View className="flex h-10 w-10 items-center justify-center rounded-full bg-secondary">
-              <Icon size={25} className="text-white" />
+              {available ? (
+                <Icon size={25} className="text-white" />
+              ) : (
+                <Hourglass size={25} className="text-white" />
+              )}
             </View>
           </View>
           <View className="flex h-1/2 items-center justify-center">
