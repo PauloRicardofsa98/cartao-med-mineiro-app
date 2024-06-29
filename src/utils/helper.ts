@@ -14,3 +14,7 @@ export const maskCpfCnpj = (v: string) => {
 
   return v;
 };
+export const convertDate = (date: string): string => {
+  const [year, month, day] = date.split("-");
+  return `${day}/${month}/${year}`;
+};
