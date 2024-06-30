@@ -2,6 +2,7 @@ import { useSession } from "@/contexts/auth";
 import { api } from "@/services/api";
 import { PaymentAsaas } from "@/types/asaas";
 import { convertDate } from "@/utils/helper";
+import { AxiosError } from "axios";
 import { ChevronDown } from "lucide-react-native";
 import { useEffect, useState } from "react";
 import {
@@ -16,13 +17,13 @@ import {
 import * as Animatable from "react-native-animatable";
 
 export default function PaymentsScreen() {
-  const { user } = useSession();
+  const { user, signOut } = useSession();
   const [loading, setLoading] = useState(false);
   const [payments, setPayments] = useState<PaymentAsaas[]>([]);
 
   useEffect(() => {
     setLoading(true);
-    async function getCities() {
+    async function getPayments() {
       try {
         const response = await api.get(
           `/subscription/payments/${user?.subscriptionUuid}`,
@@ -37,10 +38,16 @@ export default function PaymentsScreen() {
         }
         setPayments(data);
       } catch (error) {
+        if (error instanceof AxiosError) {
+          if (error.response?.status === 401) {
+            Alert.alert("Sessão expirada. Faça login novamente.");
+            signOut();
+          }
+        }
         console.error(error);
       }
     }
-    getCities();
+    getPayments();
     setLoading(false);
   }, []);
 
