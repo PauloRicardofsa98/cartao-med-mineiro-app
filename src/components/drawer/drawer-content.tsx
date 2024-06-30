@@ -3,6 +3,7 @@ import { DrawerButton } from "./drawer-button";
 import { View } from "react-native-animatable";
 import { X } from "lucide-react-native";
 import { Pressable } from "react-native";
+import { translator } from "@/utils/translator";
 
 export const DrawerContent = (drawerProps: DrawerContentComponentProps) => {
   return (
@@ -17,10 +18,12 @@ export const DrawerContent = (drawerProps: DrawerContentComponentProps) => {
         />
       </Pressable>
       {drawerProps.state.routes.map((route, index) => {
+        const excludedRoutes = ["guide-gas/[uuid]", "guide-gas/new-request"];
+        if (excludedRoutes.includes(route.name)) return null;
         return (
           <DrawerButton
             key={index}
-            title={route.name}
+            title={translator[route.name]}
             isFocused={drawerProps.state.index === index}
             onPress={() => {
               drawerProps.navigation.navigate(route.name);
