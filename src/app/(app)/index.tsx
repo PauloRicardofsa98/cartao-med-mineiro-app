@@ -4,7 +4,16 @@ import { api } from "@/services/api";
 import { maskCpfCnpj } from "@/utils/helper";
 import { LinearGradient } from "expo-linear-gradient";
 import { router } from "expo-router";
-import { HeartPulse, MessageCircleMore, ScanFace } from "lucide-react-native";
+import {
+  Container,
+  DiamondPlus,
+  Flame,
+  Handshake,
+  HeartPulse,
+  MessageCircleMore,
+  ReceiptText,
+  ScanFace,
+} from "lucide-react-native";
 import { useState } from "react";
 import { Alert, Image, Linking, SafeAreaView, Text, View } from "react-native";
 import Toast from "react-native-toast-message";
@@ -109,22 +118,30 @@ export default function HomeScreen() {
               text="Suporte"
               onPress={openSupport}
             />
-            <HomeButton Icon={HeartPulse} text="2º via de boleto" />
             <HomeButton
-              Icon={HeartPulse}
+              Icon={ReceiptText}
+              text="2º via de fatura"
+              onPress={() => router.push("/payments")}
+            />
+            <HomeButton
+              Icon={Handshake}
               text="Parceiros"
               onPress={() => router.push("/partner")}
             />
-            <HomeButton Icon={HeartPulse} text="Clube de Benefícios" />
             <HomeButton
-              Icon={HeartPulse}
+              Icon={DiamondPlus}
+              text="Clube de Benefícios"
+              onPress={() => router.push("/club")}
+            />
+            <HomeButton
+              Icon={Container}
               text="Fornecedor de gás"
               onPress={() => router.push("/supplier-gas")}
             />
             <HomeButton
-              Icon={HeartPulse}
-              text="Guia de Gás"
-              available={false}
+              Icon={Flame}
+              text="Solicitar guia desconto gas"
+              onPress={() => router.push("/guide-gas")}
             />
             <HomeButton
               Icon={HeartPulse}
