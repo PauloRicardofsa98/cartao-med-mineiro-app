@@ -15,7 +15,6 @@ export type Dependent = {
   updated_at: Date;
   branchUuid: string;
   external: boolean;
-  planName: string;
 };
 export type Customer = {
   uuid: string;
@@ -44,4 +43,5 @@ export type User = {
   holderUuid: string;
   plan: string;
   subscriptionUuid: string;
+  subscriptionActive: boolean;
 };

@@ -59,15 +59,17 @@ export function SessionProvider(props: PropsWithChildren) {
       });
 
       const { token, customer, dependent } = response.data.data;
+
       let user: User;
       if (dependent) {
         user = {
           uuid: dependent.uuid,
           name: dependent.name,
-          cpfOrCnpj: dependent.cpfOrCnpj,
+          cpfOrCnpj: dependent.cpf,
           holderUuid: customer.uuid,
           plan: customer.planName,
           subscriptionUuid: customer.subscriptionUuid,
+          subscriptionActive: customer.subscriptionActive,
         };
         setUser(user);
       } else {
@@ -78,6 +80,7 @@ export function SessionProvider(props: PropsWithChildren) {
           holderUuid: customer.uuid,
           plan: customer.planName,
           subscriptionUuid: customer.subscriptionUuid,
+          subscriptionActive: customer.subscriptionActive,
         };
         setUser(user);
       }
