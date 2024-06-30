@@ -41,7 +41,7 @@ export type User = {
   uuid: string;
   name: string;
   cpfOrCnpj: string;
-  holder: string;
+  holderUuid: string;
   plan: string;
   subscriptionUuid: string;
 };
