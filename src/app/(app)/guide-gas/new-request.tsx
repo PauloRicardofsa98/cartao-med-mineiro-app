@@ -4,12 +4,13 @@ import { api } from "@/services/api";
 import { GuideGasProps } from "@/types/guide-gas";
 import { SupplierGas } from "@/types/supplier-gas";
 import { styles } from "@/utils/styles";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { router } from "expo-router";
 import { ChevronDown, ChevronUp } from "lucide-react-native";
 import { useEffect, useState } from "react";
 import {
   ActivityIndicator,
+  Alert,
   Modal,
   Pressable,
   ScrollView,
@@ -19,7 +20,7 @@ import {
 import Toast from "react-native-toast-message";
 
 export default function NewRequest() {
-  const { user } = useSession();
+  const { user, signOut } = useSession();
 
   const [open, setOpen] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
@@ -38,6 +39,12 @@ export default function NewRequest() {
         const listSupplier = response.data.data;
         setSuppliers(listSupplier);
       } catch (error) {
+        if (error instanceof AxiosError) {
+          if (error.response?.status === 401) {
+            Alert.alert("Sessão expirada. Faça login novamente.");
+            signOut();
+          }
+        }
         console.error(error);
       }
     }

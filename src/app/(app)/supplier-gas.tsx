@@ -1,8 +1,9 @@
 import { api } from "@/services/api";
 import { SupplierGas } from "@/types/supplier-gas";
 import { styles } from "@/utils/styles";
+import { AxiosError } from "axios";
 import { useEffect, useState } from "react";
-import { ActivityIndicator, Text } from "react-native";
+import { ActivityIndicator, Alert, Text } from "react-native";
 import { ScrollView, View } from "react-native";
 
 export default function ClubScreen() {
@@ -17,6 +18,12 @@ export default function ClubScreen() {
         const listSupplier = response.data.data;
         setSuppliers(listSupplier);
       } catch (error) {
+        if (error instanceof AxiosError) {
+          if (error.response?.status === 401) {
+            Alert.alert("Sessão expirada. Faça login novamente.");
+            signOut();
+          }
+        }
         console.error(error);
       }
     }
@@ -69,4 +76,7 @@ export default function ClubScreen() {
       </ScrollView>
     </View>
   );
+}
+function signOut() {
+  throw new Error("Function not implemented.");
 }

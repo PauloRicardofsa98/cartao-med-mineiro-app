@@ -6,6 +6,7 @@ import {
   ActivityIndicator,
   Modal,
   FlatList,
+  Alert,
 } from "react-native";
 import * as Animatable from "react-native-animatable";
 import { ChevronDown, ChevronUp } from "lucide-react-native";
@@ -16,6 +17,8 @@ import { Partner } from "@/types/partner";
 import { api } from "@/services/api";
 import { City } from "@/types/city";
 import { PartnerItem } from "@/components/partner-item";
+import { AxiosError } from "axios";
+import { useSession } from "@/contexts/auth";
 
 type ModalInfo = {
   type: "address" | "contact";
@@ -23,6 +26,7 @@ type ModalInfo = {
 };
 
 export default function PartnerScreen() {
+  const { signOut } = useSession();
   const [open, setOpen] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -42,6 +46,12 @@ export default function PartnerScreen() {
         const cities = response.data.data;
         setCities(cities);
       } catch (error) {
+        if (error instanceof AxiosError) {
+          if (error.response?.status === 401) {
+            Alert.alert("Sessão expirada. Faça login novamente.");
+            signOut();
+          }
+        }
         console.error(error);
       }
     }
@@ -78,6 +88,12 @@ export default function PartnerScreen() {
       const partners = response.data.data;
       setPartners(partners);
     } catch (error) {
+      if (error instanceof AxiosError) {
+        if (error.response?.status === 401) {
+          Alert.alert("Sessão expirada. Faça login novamente.");
+          signOut();
+        }
+      }
       console.error(error);
     }
   }

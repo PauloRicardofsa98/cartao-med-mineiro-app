@@ -4,10 +4,12 @@ import { useSession } from "@/contexts/auth";
 import { api } from "@/services/api";
 import { GuideGas } from "@/types/guide-gas";
 import { HelperRequestParams } from "@/types/helpers";
+import { AxiosError } from "axios";
 import { router, useFocusEffect } from "expo-router";
 import { useEffect, useState } from "react";
 import {
   ActivityIndicator,
+  Alert,
   FlatList,
   RefreshControl,
   Text,
@@ -16,7 +18,7 @@ import { View } from "react-native";
 import Toast from "react-native-toast-message";
 
 export default function GuideGasScreen() {
-  const { user } = useSession();
+  const { user, signOut } = useSession();
 
   const [loading, setLoading] = useState(false);
   const [loadingFlatList, setLoadingFlatList] = useState(false);
@@ -66,6 +68,12 @@ export default function GuideGasScreen() {
 
       setGuides(guides);
     } catch (error) {
+      if (error instanceof AxiosError) {
+        if (error.response?.status === 401) {
+          Alert.alert("Sessão expirada. Faça login novamente.");
+          signOut();
+        }
+      }
       console.error(error);
     }
   }
