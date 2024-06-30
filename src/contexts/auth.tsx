@@ -18,6 +18,7 @@ type AuthContextData = {
     cpf: string;
     birthday: string;
   }) => Promise<ResponseLogin | string>;
+  signOut: () => Promise<void>;
 };
 
 const AuthContext = React.createContext({} as AuthContextData);
@@ -41,7 +42,6 @@ export function SessionProvider(props: PropsWithChildren) {
   useEffect(() => {
     async function getUser() {
       const userInfo = await AsyncStorage.getItem("@cmm");
-      console.log("userInfo: ", userInfo);
       const hasUser = JSON.parse(userInfo || "{}") as {
         user: User;
         token: string;
@@ -96,13 +96,17 @@ export function SessionProvider(props: PropsWithChildren) {
 
       return { customer, dependent };
     } catch (error) {
-      console.log("erro ao acessar: ", JSON.stringify(error));
       if (error instanceof AxiosError) {
-        console.log(error.response?.data.message);
         return error.response?.data.message;
       }
       return "Opss, algo deu errado! Tente novamente!";
     }
+  }
+
+  async function signOut() {
+    await AsyncStorage.removeItem("@cmm");
+    setUser(undefined);
+    router.replace("/login");
   }
 
   return (
@@ -111,6 +115,7 @@ export function SessionProvider(props: PropsWithChildren) {
         isAuth,
         user,
         signIn,
+        signOut,
       }}
     >
       {props.children}
