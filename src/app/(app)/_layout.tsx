@@ -78,6 +78,12 @@ export default function AppLayout() {
           title: "Fornecedores de gás",
         }}
       />
+      <Drawer.Screen
+        name="guide-gas/index"
+        options={{
+          title: "Pedidos de gás",
+        }}
+      />
     </Drawer>
   );
 }
