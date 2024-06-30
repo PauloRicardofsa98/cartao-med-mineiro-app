@@ -17,7 +17,7 @@ export default function ClubScreen() {
           <View className="absolute bottom-[15%] left-[-15%] -rotate-90">
             <Text className="text-lg font-bold">{user?.plan}</Text>
           </View>
-          <View className="absolute bottom-[60%] right-[-20%] -rotate-90">
+          <View className="absolute bottom-[60%] right-[-10%] -rotate-90">
             <Text className="text-sm font-semibold">{user?.name}</Text>
             <Text className="text-sm font-semibold">
               CPF: {maskCpfCnpj(user?.cpfOrCnpj || "")}
