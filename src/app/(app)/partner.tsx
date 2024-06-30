@@ -3,9 +3,9 @@ import {
   Text,
   Pressable,
   ScrollView,
-  Image,
   ActivityIndicator,
   Modal,
+  FlatList,
 } from "react-native";
 import * as Animatable from "react-native-animatable";
 import { ChevronDown, ChevronUp } from "lucide-react-native";
@@ -15,6 +15,7 @@ import { styles } from "@/utils/styles";
 import { Partner } from "@/types/partner";
 import { api } from "@/services/api";
 import { City } from "@/types/city";
+import { PartnerItem } from "@/components/partner-item";
 
 type ModalInfo = {
   type: "address" | "contact";
@@ -112,8 +113,9 @@ export default function PartnerScreen() {
           </View>
         </View>
       </Modal>
+
       <Animatable.View
-        className={`flex flex-1 items-center ${!selectedCity ? "justify-center" : "justify-start"} pt-4`}
+        className={`flex w-screen flex-1 items-center ${!selectedCity ? "justify-center" : "justify-start"} pt-4`}
         animation={!selectedCity ? "pulse" : undefined}
         duration={1000}
         iterationCount={5}
@@ -162,53 +164,29 @@ export default function PartnerScreen() {
           </View>
         )}
         {!open && selectedCity && (
-          <ScrollView
-            className="mt-4 w-full p-4"
+          <FlatList
+            data={partners}
+            keyExtractor={(item) => item.uuid}
+            ListHeaderComponent={() => (
+              <Text className="text-center text-2xl font-semibold italic">
+                {selectedCity.name} - {selectedCity.state}
+              </Text>
+            )}
+            renderItem={({ item }) => (
+              <PartnerItem
+                partner={item}
+                handleOpenModalInfo={handleOpenModalInfo}
+              />
+            )}
             contentContainerStyle={{
               display: "flex",
               alignItems: "center",
-              justifyContent: "center",
-              gap: 22,
+              justifyContent: "flex-start",
+              gap: 20,
+              padding: 10,
+              width: "100%",
             }}
-          >
-            {partners.map((partner, index) => (
-              <View
-                key={index}
-                className="w-full items-center justify-center gap-2 rounded-xl bg-white py-4"
-                style={styles.shadow}
-              >
-                <View className="h-64 w-[95%] rounded-xl">
-                  <Image
-                    source={{
-                      uri: `https://apiv2.cartaomedmineiro.com.br/upload/${partner.banner}`,
-                      // uri: `http://192.168.18.95:8000/upload/${partner.banner}`,
-                    }}
-                    className="h-full w-full rounded-xl"
-                    resizeMode="contain"
-                  />
-                </View>
-
-                <Text className="text-2xl font-bold text-black">
-                  {partner.name}
-                </Text>
-                <Text className="text-xl text-black">{partner.benefit}</Text>
-                <View className="flex flex-row items-center justify-center gap-1 px-2">
-                  <Button
-                    className="h-11 flex-1"
-                    onPress={() => handleOpenModalInfo(partner, "address")}
-                  >
-                    Contato
-                  </Button>
-                  <Button
-                    className="h-11 flex-1"
-                    onPress={() => handleOpenModalInfo(partner, "contact")}
-                  >
-                    Endereço
-                  </Button>
-                </View>
-              </View>
-            ))}
-          </ScrollView>
+          />
         )}
       </Animatable.View>
     </>
