@@ -10,6 +10,7 @@ import {
   Flame,
   Handshake,
   HeartPulse,
+  LogOut,
   MessageCircleMore,
   ReceiptText,
   ScanFace,
@@ -19,7 +20,7 @@ import { Alert, Image, Linking, SafeAreaView, Text, View } from "react-native";
 import Toast from "react-native-toast-message";
 
 export default function HomeScreen() {
-  const { user } = useSession();
+  const { user, signOut } = useSession();
   const [loadingSupport, setLoadingSupport] = useState(false);
 
   const openSupport = async () => {
@@ -79,7 +80,7 @@ export default function HomeScreen() {
               Olá, <Text className="font-bold">{user?.name.split(" ")[0]}</Text>
             </Text>
           </View>
-          <View className="flex h-52 w-80 items-center justify-center rounded-xl bg-red-300">
+          <View className="flex h-52 w-80 items-center justify-center rounded-xl">
             <Image
               source={require("../../assets/images/card.png")}
               className="h-52 w-96 rounded-xl"
@@ -132,6 +133,7 @@ export default function HomeScreen() {
               Icon={DiamondPlus}
               text="Clube de Benefícios"
               onPress={() => router.push("/club")}
+              available={false}
             />
             <HomeButton
               Icon={Container}
@@ -143,11 +145,7 @@ export default function HomeScreen() {
               text="Solicitar guia desconto gas"
               onPress={() => router.push("/guide-gas")}
             />
-            <HomeButton
-              Icon={HeartPulse}
-              text="Fazer pedido"
-              available={false}
-            />
+            <HomeButton Icon={LogOut} text="Sair" onPress={signOut} />
           </View>
         </View>
       </LinearGradient>
