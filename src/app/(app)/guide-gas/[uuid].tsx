@@ -9,7 +9,7 @@ export default function ViewGuide() {
   return (
     <View style={{ flex: 1 }}>
       <WebView
-        style={{ flex: 1, width: "100%", backgroundColor: "red", zIndex: 1 }}
+        style={{ flex: 1, width: "100%", zIndex: 1 }}
         source={{
           uri: `http://192.168.18.95:3000/printer-guide-gas/${uuid}?type=customer_authorization_guide`,
         }}
