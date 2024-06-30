@@ -1,23 +1,15 @@
 import { api } from "@/services/api";
-import { Customer, Dependent, User } from "@/types/user";
+import { User } from "@/types/user";
 import React, { PropsWithChildren, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { AxiosError } from "axios";
 import { router } from "expo-router";
 
-type ResponseLogin = {
-  customer: Customer;
-  dependent: Dependent | undefined;
-};
-
 type AuthContextData = {
   isAuth: boolean;
   user: User | undefined;
 
-  signIn: (data: {
-    cpf: string;
-    birthday: string;
-  }) => Promise<ResponseLogin | string>;
+  signIn: (data: { cpf: string; birthday: string }) => Promise<User | string>;
   signOut: () => Promise<void>;
 };
 
@@ -94,7 +86,7 @@ export function SessionProvider(props: PropsWithChildren) {
 
       api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
-      return { customer, dependent };
+      return user;
     } catch (error) {
       if (error instanceof AxiosError) {
         return error.response?.data.message;

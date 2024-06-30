@@ -54,13 +54,10 @@ export default function LoginScreen() {
       return;
     }
 
-    const { customer, dependent } = login;
-    const user = customer || dependent;
-
     Toast.show({
       type: "success",
       position: "bottom",
-      text1: `Bem vindo ${user.name}!`,
+      text1: `Bem vindo ${login.name}!`,
       visibilityTime: 3000,
     });
     router.replace("/");
