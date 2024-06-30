@@ -15,7 +15,6 @@ export default function AppLayout() {
   return (
     <Drawer
       screenOptions={({ navigation }) => ({
-        headerShown: true,
         headerStyle: {
           backgroundColor: "#042A43",
         },
@@ -50,15 +49,27 @@ export default function AppLayout() {
         }}
       />
       <Drawer.Screen
-        name="partner"
+        name="card-identity"
         options={{
-          title: "Parceiros",
+          title: "Carteirinha",
         }}
       />
       <Drawer.Screen
         name="club"
         options={{
           title: "Clube de benefícios",
+        }}
+      />
+      <Drawer.Screen
+        name="partner"
+        options={{
+          title: "Parceiros",
+        }}
+      />
+      <Drawer.Screen
+        name="payments"
+        options={{
+          title: "Faturas",
         }}
       />
       <Drawer.Screen
