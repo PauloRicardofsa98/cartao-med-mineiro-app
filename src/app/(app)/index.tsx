@@ -38,6 +38,14 @@ export default function HomeScreen() {
   };
 
   const openService = async () => {
+    if (!user?.subscriptionActive) {
+      Toast.show({
+        type: "error",
+        text1:
+          "Acesso negado, Para acessar essa funcionalidade é necessário estar com a assinatura ativa.",
+      });
+      return;
+    }
     try {
       setLoadingSupport(true);
       const response = await api.get(`gateway/rapidoc/service/${user?.uuid}`);
@@ -48,22 +56,32 @@ export default function HomeScreen() {
       } else {
         Toast.show({
           type: "error",
-          position: "bottom",
           text1: "Não foi possível abrir o atendimento, contate o suporte!",
-          visibilityTime: 3000,
         });
       }
       setLoadingSupport(false);
     } catch (error) {
       Toast.show({
         type: "error",
-        position: "bottom",
+
         text1: "Não foi possível abrir o atendimento!",
         text2: "Tente novamente ou contate o suporte.",
-        visibilityTime: 3000,
       });
       setLoadingSupport(false);
     }
+  };
+
+  const handlePush = (route: string) => {
+    if (!user?.subscriptionActive) {
+      Toast.show({
+        type: "error",
+        text1:
+          "Acesso negado, Para acessar essa funcionalidade é necessário estar com a assinatura ativa.",
+      });
+      return;
+    }
+
+    router.push(route);
   };
 
   return (
@@ -98,9 +116,15 @@ export default function HomeScreen() {
         </View>
 
         <View className="flex h-[60%] w-full items-center justify-center rounded-t-[50px] bg-white px-3 py-4">
-          <Text className="mt-2 text-2xl font-semibold">
-            O que você precisa hoje?
-          </Text>
+          {user?.subscriptionActive ? (
+            <Text className="mt-2 text-2xl font-semibold">
+              O que você precisa hoje?
+            </Text>
+          ) : (
+            <Text className="mt-2 text-2xl font-semibold text-red-500">
+              Sua assinatura esta suspensa
+            </Text>
+          )}
 
           <View className="flex h-full w-full flex-row flex-wrap items-center justify-center pt-2">
             <HomeButton
@@ -108,11 +132,13 @@ export default function HomeScreen() {
               text="Solicitar atendimento"
               loading={loadingSupport}
               onPress={openService}
+              block={!user?.subscriptionActive}
             />
             <HomeButton
               Icon={ScanFace}
               text="Carteirinha"
-              onPress={() => router.push("/card-identity")}
+              onPress={() => handlePush("card-identity")}
+              block={!user?.subscriptionActive}
             />
             <HomeButton
               Icon={MessageCircleMore}
@@ -127,22 +153,26 @@ export default function HomeScreen() {
             <HomeButton
               Icon={Handshake}
               text="Parceiros"
-              onPress={() => router.push("/partner")}
+              onPress={() => handlePush("/partner")}
+              block={!user?.subscriptionActive}
             />
             <HomeButton
               Icon={DiamondPlus}
               text="Clube de Benefícios"
               available={false}
+              block={!user?.subscriptionActive}
             />
             <HomeButton
               Icon={Container}
               text="Fornecedor de gás"
-              onPress={() => router.push("/supplier-gas")}
+              onPress={() => handlePush("/supplier-gas")}
+              block={!user?.subscriptionActive}
             />
             <HomeButton
               Icon={Flame}
               text="Solicitar guia desconto gas"
-              onPress={() => router.push("/guide-gas")}
+              onPress={() => handlePush("/guide-gas")}
+              block={!user?.subscriptionActive}
             />
             <HomeButton Icon={LogOut} text="Sair" onPress={signOut} />
           </View>

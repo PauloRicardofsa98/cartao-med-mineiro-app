@@ -9,6 +9,7 @@ interface HomeButtonProps extends PressableProps {
   text: string;
   available?: boolean;
   loading?: boolean;
+  block?: boolean;
 }
 
 export const HomeButton = ({
@@ -16,6 +17,7 @@ export const HomeButton = ({
   text,
   available = true,
   loading = false,
+  block = false,
   ...rest
 }: HomeButtonProps) => {
   return (
@@ -30,11 +32,13 @@ export const HomeButton = ({
         </View>
       ) : (
         <Pressable
-          className="flex h-full w-full items-center justify-center"
+          className={`flex h-full w-full items-center justify-center rounded-xl bg-white ${block && "border-2 border-red-500"}`}
           {...rest}
         >
           <View className="flex h-1/2 items-center justify-end">
-            <View className="flex h-10 w-10 items-center justify-center rounded-full bg-secondary">
+            <View
+              className={`flex h-10 w-10 items-center justify-center rounded-full ${block ? "bg-red-500" : "bg-secondary"} `}
+            >
               {available ? (
                 <Icon size={25} className="text-white" />
               ) : (
