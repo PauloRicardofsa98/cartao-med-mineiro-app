@@ -46,9 +46,7 @@ export default function LoginScreen() {
     if (typeof login === "string") {
       Toast.show({
         type: "error",
-        position: "bottom",
         text1: login,
-        visibilityTime: 3000,
       });
       setLoading(false);
       return;
@@ -56,9 +54,7 @@ export default function LoginScreen() {
 
     Toast.show({
       type: "success",
-      position: "bottom",
       text1: `Bem vindo ${login.name}!`,
-      visibilityTime: 3000,
     });
     router.replace("/");
     setLoading(false);

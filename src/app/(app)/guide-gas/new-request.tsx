@@ -77,7 +77,6 @@ export default function NewRequest() {
         type: "error",
         text1: "Erro ao criar guia de desconto, tente novamente.",
         text2: message,
-        visibilityTime: 4000,
       });
       setLoadingRequest(false);
       setModalVisible(false);

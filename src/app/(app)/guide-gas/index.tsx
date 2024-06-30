@@ -102,7 +102,6 @@ export default function GuideGasScreen() {
       Toast.show({
         type: "info",
         text1: "Você já tem um pedido de gás este mês",
-        visibilityTime: 3000,
       });
       return;
     }
