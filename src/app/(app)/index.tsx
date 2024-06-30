@@ -132,7 +132,6 @@ export default function HomeScreen() {
             <HomeButton
               Icon={DiamondPlus}
               text="Clube de Benefícios"
-              onPress={() => router.push("/club")}
               available={false}
             />
             <HomeButton
