@@ -71,14 +71,12 @@ export default function GuideGasScreen() {
   }
 
   const handleRefresh = () => {
-    console.log("refreshing");
     setLoadingFlatList(true);
     getGuides({
       filters: { customerUuid: user?.holderUuid },
       includes: ["supplier_gas"],
     });
     setLoadingFlatList(false);
-    console.log("refreshed");
   };
 
   const handleNewRequest = () => {
@@ -139,9 +137,16 @@ export default function GuideGasScreen() {
         }
       />
 
-      <View className="flex h-24 w-full items-center justify-center bg-primary">
+      <View className="flex h-24 w-full flex-row items-center justify-around bg-primary">
         <Button
-          className="h-12 w-40"
+          className="h-12 w-36"
+          variant="secondary"
+          onPress={() => router.back()}
+        >
+          Voltar
+        </Button>
+        <Button
+          className="h-12 w-36"
           variant="outline"
           onPress={handleNewRequest}
         >

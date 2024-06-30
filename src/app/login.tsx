@@ -53,7 +53,6 @@ export default function LoginScreen() {
       setLoading(false);
       return;
     }
-    console.log(login);
 
     const { customer, dependent } = login;
     const user = customer || dependent;
