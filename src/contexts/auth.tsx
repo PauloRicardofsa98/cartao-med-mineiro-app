@@ -73,7 +73,7 @@ export function SessionProvider(props: PropsWithChildren) {
           uuid: dependent.uuid,
           name: dependent.name,
           cpfOrCnpj: dependent.cpfOrCnpj,
-          holder: customer.name,
+          holderUuid: customer.uuid,
           plan: customer.planName,
           subscriptionUuid: customer.subscriptionUuid,
         };
@@ -83,7 +83,7 @@ export function SessionProvider(props: PropsWithChildren) {
           uuid: customer.uuid,
           name: customer.name,
           cpfOrCnpj: customer.cpfOrCnpj,
-          holder: customer.uuid,
+          holderUuid: customer.uuid,
           plan: customer.planName,
           subscriptionUuid: customer.subscriptionUuid,
         };
