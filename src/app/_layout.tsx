@@ -53,7 +53,7 @@ export const toastConfig: ToastConfig = {
       ]}
     />
   ),
-  warning: (props) => (
+  info: (props) => (
     <BaseToast
       {...props}
       {...toastProps}
