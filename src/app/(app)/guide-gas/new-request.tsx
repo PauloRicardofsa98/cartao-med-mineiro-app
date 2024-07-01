@@ -6,7 +6,7 @@ import { SupplierGas } from "@/types/supplier-gas";
 import { styles } from "@/utils/styles";
 import axios, { AxiosError } from "axios";
 import { router } from "expo-router";
-import { ChevronDown, ChevronUp } from "lucide-react-native";
+import { ChevronDown, ChevronUp, X } from "lucide-react-native";
 import { useEffect, useState } from "react";
 import {
   ActivityIndicator,
@@ -113,6 +113,10 @@ export default function NewRequest() {
           {!loadingRequest ? (
             <View className="flex w-11/12 items-center gap-3 rounded-xl bg-white p-2">
               <Text className="text-xl font-bold">Confirmação de pedido</Text>
+              <X
+                className="absolute right-1 top-1 h-16 w-16 text-black"
+                onPress={() => setModalVisible(false)}
+              />
               <Text className="text-justify text-base">
                 Ao clicar em "Solicitar Desconto", você confirma que revisou
                 todas as informações fornecidas, concorda com os termos e
