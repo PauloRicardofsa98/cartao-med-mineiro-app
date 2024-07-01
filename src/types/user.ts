@@ -44,4 +44,5 @@ export type User = {
   plan: string;
   subscriptionUuid: string;
   subscriptionActive: boolean;
+  isExternalSubscription: boolean;
 };

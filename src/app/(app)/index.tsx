@@ -71,6 +71,17 @@ export default function HomeScreen() {
     }
   };
 
+  const openPayments = async () => {
+    if (user?.isExternalSubscription) {
+      Toast.show({
+        type: "info",
+        text1: "Contate nosso suporte para atualizar sua assinatura.",
+      });
+      return;
+    }
+    router.push("/payments");
+  };
+
   const handlePush = (route: string) => {
     if (!user?.subscriptionActive) {
       Toast.show({
@@ -148,7 +159,7 @@ export default function HomeScreen() {
             <HomeButton
               Icon={ReceiptText}
               text="2º via de fatura"
-              onPress={() => router.push("/payments")}
+              onPress={openPayments}
             />
             <HomeButton
               Icon={Handshake}

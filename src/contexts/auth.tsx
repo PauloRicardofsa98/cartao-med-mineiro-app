@@ -70,6 +70,7 @@ export function SessionProvider(props: PropsWithChildren) {
           plan: customer.planName,
           subscriptionUuid: customer.subscriptionUuid,
           subscriptionActive: customer.subscriptionActive,
+          isExternalSubscription: customer.isExternalSubscription,
         };
         setUser(user);
       } else {
@@ -81,6 +82,7 @@ export function SessionProvider(props: PropsWithChildren) {
           plan: customer.planName,
           subscriptionUuid: customer.subscriptionUuid,
           subscriptionActive: customer.subscriptionActive,
+          isExternalSubscription: customer.isExternalSubscription,
         };
         setUser(user);
       }
