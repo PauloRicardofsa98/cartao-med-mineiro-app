@@ -18,12 +18,13 @@ import * as Animatable from "react-native-animatable";
 
 export default function PaymentsScreen() {
   const { user, signOut } = useSession();
+  console.log(user);
   const [loading, setLoading] = useState(false);
   const [payments, setPayments] = useState<PaymentAsaas[]>([]);
 
   useEffect(() => {
-    setLoading(true);
     async function getPayments() {
+      setLoading(true);
       try {
         const response = await api.get(
           `/subscription/payments/${user?.subscriptionUuid}`,
@@ -37,6 +38,7 @@ export default function PaymentsScreen() {
           });
         }
         setPayments(data);
+        setLoading(false);
       } catch (error) {
         if (error instanceof AxiosError) {
           if (error.response?.status === 401) {
@@ -45,10 +47,10 @@ export default function PaymentsScreen() {
           }
         }
         console.error(error);
+        setLoading(false);
       }
     }
     getPayments();
-    setLoading(false);
   }, []);
 
   const openPayment = async (link: string | undefined) => {
@@ -102,6 +104,8 @@ export default function PaymentsScreen() {
                 return { text: "text-green-500", border: "border-green-500" };
               if (payment.status === "OVERDUE")
                 return { text: "text-red-500", border: "border-red-500" };
+              if (payment.status === "RECEIVED_IN_CASH")
+                return { text: "text-green-600", border: "border-green-600" };
             };
 
             const status = () => {
@@ -109,6 +113,7 @@ export default function PaymentsScreen() {
               if (payment.status === "RECEIVED") return "Recebido";
               if (payment.status === "CONFIRMED") return "Confirmado";
               if (payment.status === "OVERDUE") return "Atrasado";
+              if (payment.status === "RECEIVED_IN_CASH") return "Recebido";
             };
 
             return (
