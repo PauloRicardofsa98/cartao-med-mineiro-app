@@ -11,7 +11,7 @@ export default function ViewGuide() {
       <WebView
         style={{ flex: 1, width: "100%", zIndex: 1 }}
         source={{
-          uri: `http://192.168.18.95:3000/printer-guide-gas/${uuid}?type=customer_authorization_guide`,
+          uri: `https://acesso.cartaomedmineiro.com.br/printer-guide-gas/${uuid}?type=customer_authorization_guide`,
         }}
         injectedJavaScript={`
           const iOS = !!navigator.platform && /iPad|iPhone|iPod/.test(navigator.platform);
