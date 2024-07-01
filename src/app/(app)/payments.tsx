@@ -18,7 +18,6 @@ import * as Animatable from "react-native-animatable";
 
 export default function PaymentsScreen() {
   const { user, signOut } = useSession();
-  console.log(user);
   const [loading, setLoading] = useState(false);
   const [payments, setPayments] = useState<PaymentAsaas[]>([]);
 
