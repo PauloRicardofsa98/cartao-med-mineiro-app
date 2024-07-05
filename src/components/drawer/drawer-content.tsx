@@ -41,6 +41,9 @@ export const DrawerContent = (drawerProps: DrawerContentComponentProps) => {
         )
           return null;
 
+        //exclui temporariamente a rota do clube de benefícios
+        if (route.name === "club") return null;
+
         return (
           <DrawerButton
             key={index}
