@@ -59,12 +59,21 @@ export default function PartnerScreen() {
     setLoading(false);
   }, []);
 
-  const handleSelectedCity = async (city: City) => {
+  useEffect(() => {
+    if (selectedCity) {
+      const fetchPartners = async () => {
+        setLoading(true);
+        await getPartners();
+        setLoading(false);
+      };
+      fetchPartners();
+    }
+  }, [selectedCity]);
+
+  const handleSelectedCity = (city: City) => {
     setLoading(true);
     setOpen(false);
     setSelectedCity(city);
-    await getPartners();
-    setLoading(false);
   };
 
   const handleOpenModalInfo = async (
