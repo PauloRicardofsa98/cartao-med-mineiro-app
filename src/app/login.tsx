@@ -25,7 +25,7 @@ type LoginProps = {
 
 export default function LoginScreen() {
   const { signIn } = useSession();
-  const [prologo, setPrologo] = useState(false);
+  const [prologo, setPrologo] = useState(true);
   const [loading, setLoading] = useState(false);
 
   const {
