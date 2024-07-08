@@ -84,6 +84,12 @@ export default function AppLayout() {
           title: "Pedidos de gás",
         }}
       />
+      <Drawer.Screen
+        name="guide-gas/[uuid]"
+        options={{
+          title: "Detalhes da guia",
+        }}
+      />
     </Drawer>
   );
 }
