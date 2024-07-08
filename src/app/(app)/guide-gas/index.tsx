@@ -88,20 +88,20 @@ export default function GuideGasScreen() {
   };
 
   const handleNewRequest = () => {
-    const guideLessTwentyFourHours = guides.some((guide) => {
-      const currentTime = new Date();
-      const guideDate = new Date(guide.created_at);
+    const guideLessThanThirtyDays = guides.some((guide) => {
+      const currentTime = new Date().getTime();
+      const guideDate = new Date(guide.created_at).getTime();
 
-      return (
-        guideDate.getMonth() === currentTime.getMonth() &&
-        guideDate.getFullYear() === currentTime.getFullYear() &&
-        guideDate.getDate() === currentTime.getDate()
-      );
+      const differenceInTime = currentTime - guideDate;
+      const differenceInDays = differenceInTime / (1000 * 3600 * 24);
+
+      return differenceInDays < 30;
     });
-    if (guideLessTwentyFourHours) {
+
+    if (guideLessThanThirtyDays) {
       Toast.show({
         type: "info",
-        text1: "Você já tem um pedido de gás este mês",
+        text1: "Você já tem um pedido de gás nos últimos 30 dias",
       });
       return;
     }
