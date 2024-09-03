@@ -20,7 +20,7 @@ export const PartnerItem = ({
       <View className="h-64 w-[95%] rounded-xl">
         <Image
           source={{
-            uri: `https://apiv2.cartaomedmineiro.com.br/upload/${partner.banner}`,
+            uri: `https://apiv2.cartaomedmineiro.com.br/upload/partner/${partner.banner}`,
           }}
           className="h-full w-full rounded-xl"
           resizeMode="contain"

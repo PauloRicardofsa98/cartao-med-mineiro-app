@@ -48,6 +48,7 @@ export default function HomeScreen() {
     }
     try {
       setLoadingSupport(true);
+      // #TODO: Change to the correct endpoint
       const response = await api.get(`gateway/rapidoc/service/${user?.uuid}`);
       const supported = await Linking.canOpenURL(response.data.data);
 
