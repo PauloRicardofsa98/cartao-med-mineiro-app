@@ -2,6 +2,7 @@ import { HomeButton } from "@/components/ui/home-button";
 import { useSession } from "@/contexts/auth";
 import { api } from "@/services/api";
 import { maskCpfCnpj } from "@/utils/helper";
+import { AxiosError } from "axios";
 import { LinearGradient } from "expo-linear-gradient";
 import { router } from "expo-router";
 import {
@@ -62,6 +63,12 @@ export default function HomeScreen() {
       }
       setLoadingSupport(false);
     } catch (error) {
+      if (error instanceof AxiosError) {
+        if (error.response?.status === 401) {
+          Alert.alert("Sessão expirada. Faça login novamente.");
+          signOut();
+        }
+      }
       Toast.show({
         type: "error",
 

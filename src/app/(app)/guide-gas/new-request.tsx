@@ -68,6 +68,12 @@ export default function NewRequest() {
       setModalVisible(false);
       router.push("/guide-gas");
     } catch (error) {
+      if (error instanceof AxiosError) {
+        if (error.response?.status === 401) {
+          Alert.alert("Sessão expirada. Faça login novamente.");
+          signOut();
+        }
+      }
       const message =
         axios.isAxiosError(error) && error.response?.data.message
           ? error.response.data.message
